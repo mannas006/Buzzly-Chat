@@ -16,6 +16,12 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#name-container {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
 #chat-box {
     height: 400px;
     overflow-y: scroll;

@@ -8,16 +8,20 @@
 </head>
 <body>
     <div id="container">
-        <div id="chat-box">
+        <div id="name-container">
+            <input type="text" id="name-input" placeholder="Enter your name...">
+            <button id="start-button">Start Chat</button>
+        </div>
+        <div id="chat-box" style="display: none;">
             <div id="messages"></div>
         </div>
-        <div id="controls">
+        <div id="controls" style="display: none;">
             <input type="text" id="message-input" placeholder="Type a message...">
             <button id="send-button">Send</button>
             <button id="skip-button">Skip</button>
         </div>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
