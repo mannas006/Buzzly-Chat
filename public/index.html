@@ -3,25 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Chat</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Chat App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-box {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        #messages {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background-color: #f1f1f1;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        #message-input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        #skip-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        #send-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="container">
-        <div id="name-container">
-            <input type="text" id="name-input" placeholder="Enter your name...">
-            <button id="start-button">Start Chat</button>
-        </div>
-        <div id="chat-box" style="display: none;">
-            <div id="messages"></div>
-        </div>
-        <div id="controls" style="display: none;">
-            <input type="text" id="message-input" placeholder="Type a message...">
-            <button id="send-button">Send</button>
-            <button id="skip-button">Skip</button>
+    <div id="chat-box" class="container">
+        <div id="messages" class="mb-3"></div>
+        <div id="controls" class="d-flex">
+            <input id="message-input" class="form-control" type="text" placeholder="Type a message" />
+            <button id="send-button" class="btn btn-primary">Send</button>
+            <button id="skip-button" class="btn btn-danger">Skip</button>
         </div>
     </div>
-    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

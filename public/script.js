@@ -1,8 +1,5 @@
-const socket = io('/api/chat');
+const socket = io(); // Connect to the server
 
-const nameContainer = document.getElementById('name-container');
-const nameInput = document.getElementById('name-input');
-const startButton = document.getElementById('start-button');
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
 const messageInput = document.getElementById('message-input');
@@ -10,15 +7,9 @@ const sendButton = document.getElementById('send-button');
 const skipButton = document.getElementById('skip-button');
 const messagesDiv = document.getElementById('messages');
 
-startButton.addEventListener('click', () => {
-    const name = nameInput.value.trim();
-    if (name) {
-        socket.emit('setName', name);
-        nameContainer.style.display = 'none';
-        chatBox.style.display = 'block';
-        controls.style.display = 'flex';
-    }
-});
+// Display chat box
+chatBox.style.display = 'block';
+controls.style.display = 'flex';
 
 sendButton.addEventListener('click', () => {
     const message = messageInput.value;
@@ -32,6 +23,11 @@ skipButton.addEventListener('click', () => {
     socket.emit('skip');
 });
 
+// Heartbeat mechanism
+setInterval(() => {
+    socket.emit('heartbeat');
+}, 5000);
+
 socket.on('receiveMessage', (message) => {
     const messageElement = document.createElement('div');
     messageElement.textContent = message;
@@ -40,9 +36,9 @@ socket.on('receiveMessage', (message) => {
 });
 
 socket.on('waiting', () => {
-    messagesDiv.innerHTML = '<div>Waiting for another user to connect...</div>';
+    messagesDiv.innerHTML = '<div class="alert alert-info">Waiting for another user to connect...</div>';
 });
 
 socket.on('connected', (partnerName) => {
-    messagesDiv.innerHTML = `<div>You are now connected with ${partnerName}. Start chatting!</div>`;
+    messagesDiv.innerHTML = `<div class="alert alert-success">You are now connected with ${partnerName}. Start chatting!</div>`;
 });

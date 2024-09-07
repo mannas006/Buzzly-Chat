@@ -1,26 +1,26 @@
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const server = createServer();
-const io = new Server(server);
+const io = new Server(createServer());
 
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
     socket.on('setName', (name) => {
-        // Handle name setting and chat logic
+        socket.name = name;
+        socket.emit('connected', name);
+        socket.broadcast.emit('waiting');
     });
 
     socket.on('sendMessage', (message) => {
-        // Handle sending messages
+        io.emit('receiveMessage', `${socket.name}: ${message}`);
     });
 
     socket.on('skip', () => {
-        // Handle skipping logic
+        io.emit('waiting');
     });
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
-        // Handle disconnection logic
     });
 });
 
