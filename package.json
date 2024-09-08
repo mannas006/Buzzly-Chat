@@ -14,5 +14,6 @@
     "socket.io": "^4.7.5",
     "vercel": "^37.4.0"
   },
+  "devDependencies": {},
   "description": ""
 }
