@@ -1,5 +1,5 @@
-//const socket = io(); // Connect to the server
-const socket = io('https://random-chat-app-hp9d.onrender.com');
+const socket = io(); // Connect to the server
+//const socket = io('https://random-chat-app-hp9d.onrender.com');
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
