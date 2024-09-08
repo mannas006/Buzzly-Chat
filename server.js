@@ -10,12 +10,12 @@ const io = new Server(server);
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-const animalNames = ['Lion', 'Tiger', 'Bear', 'Elephant', 'Giraffe', 'Zebra', 'Kangaroo', 'Panda', 'Penguin', 'Monkey'];
+const animeNames = ['Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 'Mikasa', 'Vegeta'];
 let connectedClients = [];
 
 // Function to get a random animal name
 function getRandomName() {
-    return animalNames[Math.floor(Math.random() * animalNames.length)];
+    return animeNames[Math.floor(Math.random() * animeNames.length)];
 }
 
 // Handle new connections
