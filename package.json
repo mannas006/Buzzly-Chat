@@ -1,19 +1,17 @@
 {
-  "name": "random-chat",
+  "name": "random-chat-app",
   "version": "1.0.0",
-  "main": "script.js",
+  "description": "A simple random chat application",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
-    "socket.io": "^4.7.5",
-    "vercel": "^37.4.0"
+    "express": "^4.17.3",
+    "socket.io": "^4.0.0"
   },
-  "devDependencies": {},
-  "description": ""
+  "engines": {
+    "node": "16.x"
+  }
 }
