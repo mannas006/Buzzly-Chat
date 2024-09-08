@@ -1,4 +1,5 @@
-const socket = io(); // Connect to the server
+//const socket = io(); // Connect to the server
+const socket = io('https://random-chat-app-virid.vercel.app');
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
