@@ -1,5 +1,5 @@
-//const socket = io(); // Connect to the server
-const socket = io('https://buzzly-chat-application.onrender.com');
+const socket = io(); // Connect to the server
+//const socket = io('https://buzzly-chat-application.onrender.com');
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
@@ -8,6 +8,7 @@ const sendButton = document.getElementById('send-button');
 const skipButton = document.getElementById('skip-button');
 const messagesDiv = document.getElementById('messages');
 const notificationSound = document.getElementById('notification-sound'); // Add the notification sound
+const chatHeader = document.querySelector('.chat-header p'); // Grab the header text
 
 // Display chat box
 chatBox.style.display = 'block';
@@ -19,7 +20,7 @@ function sendMessage() {
     if (message.trim()) {
         // Emit your message to the server
         socket.emit('sendMessage', message);
-        
+
         // Display your own message on the right side
         displayMessage('You', message, 'sent');
         messageInput.value = '';
@@ -68,10 +69,12 @@ socket.on('receiveMessage', (message) => {
 
 // Handle waiting state
 socket.on('waiting', () => {
-    messagesDiv.innerHTML = '<div class="alert alert-info">Waiting for another user to connect...</div>';
+    chatHeader.textContent = 'Waiting for another user to connect...'; // Update header text
+    messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
 });
 
 // Handle connection to a partner
 socket.on('connected', (partnerName) => {
-    messagesDiv.innerHTML = `<div class="alert alert-success">You are now connected with ${partnerName}. Start chatting!</div>`;
+    chatHeader.textContent = `Connected to ${partnerName}`; // Update header text
+    messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
 });
