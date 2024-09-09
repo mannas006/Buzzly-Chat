@@ -1,5 +1,5 @@
-const socket = io(); // Connect to the server
-//const socket = io('https://buzzly-chat-application.onrender.com');
+//const socket = io(); // Connect to the server
+const socket = io('https://buzzly-chat-application.onrender.com');
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
@@ -17,13 +17,16 @@ controls.style.display = 'flex';
 function sendMessage() {
     const message = messageInput.value;
     if (message.trim()) {
+        // Emit your message to the server
         socket.emit('sendMessage', message);
+        
+        // Display your own message on the right side
         displayMessage('You', message, 'sent');
         messageInput.value = '';
     }
 }
 
-// Function to display message
+// Function to display messages
 function displayMessage(sender, message, type) {
     const messageElement = document.createElement('div');
     messageElement.textContent = `${sender}: ${message}`;
@@ -36,7 +39,7 @@ function displayMessage(sender, message, type) {
 // Add event listener for send button
 sendButton.addEventListener('click', sendMessage);
 
-// Add event listener for Enter key
+// Add event listener for Enter key to send message
 messageInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
@@ -54,7 +57,7 @@ setInterval(() => {
     socket.emit('heartbeat');
 }, 5000);
 
-// Handle incoming messages
+// Handle incoming messages (from other users)
 socket.on('receiveMessage', (message) => {
     const { sender, content } = message; // Destructure sender and content from the message object
     displayMessage(sender, content, 'received');
