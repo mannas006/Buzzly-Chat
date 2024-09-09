@@ -72,7 +72,7 @@ body {
     display: flex;
     padding: 10px 15px;
     border-top: 1px solid #ddd;
-    align-items: center; /* Align items vertically in the center */
+    align-items: center;
 }
 
 #message-input {
@@ -112,7 +112,7 @@ body {
     color: white;
     border: none;
     transition: background-color 0.2s ease-in-out;
-    margin-left: 10px; /* Add space between buttons */
+    margin-left: 10px;
 }
 
 #skip-button:hover {

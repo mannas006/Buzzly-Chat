@@ -8,8 +8,8 @@
     "dev": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.3",
-    "socket.io": "^4.0.0"
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
   },
   "engines": {
     "node": "16.x"
