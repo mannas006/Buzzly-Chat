@@ -41,11 +41,12 @@ io.on('connection', (socket) => {
         socket.emit('waiting');
     }
 
-    // Handle new message from client
+    /// Handle new message from client
     socket.on('sendMessage', (content) => {
-        // Emit the message along with the sender's name to all connected clients
-        io.emit('receiveMessage', { sender: socket.name, content });
+        // Broadcast the message to everyone except the sender
+        socket.broadcast.emit('receiveMessage', { sender: socket.name, content });
     });
+
 
     socket.on('skip', () => {
         socket.emit('waiting');
