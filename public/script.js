@@ -7,6 +7,7 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const skipButton = document.getElementById('skip-button');
 const messagesDiv = document.getElementById('messages');
+const notificationSound = document.getElementById('notification-sound'); // Add the notification sound
 
 // Display chat box
 chatBox.style.display = 'block';
@@ -17,8 +18,19 @@ function sendMessage() {
     const message = messageInput.value;
     if (message.trim()) {
         socket.emit('sendMessage', message);
+        displayMessage('You', message, 'sent');
         messageInput.value = '';
     }
+}
+
+// Function to display message
+function displayMessage(sender, message, type) {
+    const messageElement = document.createElement('div');
+    messageElement.textContent = `${sender}: ${message}`;
+    messageElement.classList.add('message', type);
+    
+    messagesDiv.appendChild(messageElement);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
 // Add event listener for send button
@@ -43,12 +55,11 @@ setInterval(() => {
 }, 5000);
 
 // Handle incoming messages
-socket.on('receiveMessage', (message) => {
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    messageElement.classList.add('message');
-    messagesDiv.appendChild(messageElement);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+socket.on('receiveMessage', (message, sender) => {
+    displayMessage(sender, message, 'received');
+    
+    // Play notification sound for received messages
+    notificationSound.play();
 });
 
 // Handle waiting state
