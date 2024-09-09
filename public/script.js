@@ -1,5 +1,5 @@
-//const socket = io(); // Connect to the server
-const socket = io('https://buzzly-chat-application.onrender.com');
+const socket = io(); // Connect to the server
+//const socket = io('https://buzzly-chat-application.onrender.com');
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
@@ -55,8 +55,9 @@ setInterval(() => {
 }, 5000);
 
 // Handle incoming messages
-socket.on('receiveMessage', (message, sender) => {
-    displayMessage(sender, message, 'received');
+socket.on('receiveMessage', (message) => {
+    const { sender, content } = message; // Destructure sender and content from the message object
+    displayMessage(sender, content, 'received');
     
     // Play notification sound for received messages
     notificationSound.play();

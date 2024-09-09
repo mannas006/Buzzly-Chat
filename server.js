@@ -41,8 +41,10 @@ io.on('connection', (socket) => {
         socket.emit('waiting');
     }
 
-    socket.on('sendMessage', (message) => {
-        io.emit('receiveMessage', `${socket.name}: ${message}`);
+    // Handle new message from client
+    socket.on('sendMessage', (content) => {
+        // Emit the message along with the sender's name to all connected clients
+        io.emit('receiveMessage', { sender: socket.name, content });
     });
 
     socket.on('skip', () => {
