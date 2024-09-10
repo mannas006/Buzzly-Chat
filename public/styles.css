@@ -52,7 +52,8 @@ body {
     padding: 15px;
     background-color: #e0e0e0;
     overflow-y: auto;
-    height: calc(100vh - 150px); /* Dynamic height for messages area */
+    /* Adjust height to ensure the controls are always visible */
+    height: calc(100vh - 130px); /* Adjust height based on header and controls */
 }
 
 .message {
@@ -84,6 +85,10 @@ body {
     border-top: 1px solid #ddd;
     align-items: center;
     background-color: white;
+    position: absolute; /* Fixes position at the bottom */
+    bottom: 0;
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Includes padding in width calculation */
 }
 
 #message-input {
@@ -93,6 +98,7 @@ body {
     margin-right: 10px;
     border: 1px solid #ddd;
     font-size: 1rem;
+    box-sizing: border-box; /* Includes padding in width calculation */
 }
 
 /* Buttons */
@@ -106,6 +112,7 @@ body {
     border-radius: 50px;
     padding: 10px 15px;
     transition: background-color 0.2s ease-in-out;
+    box-sizing: border-box; /* Includes padding in width calculation */
 }
 
 #send-button {
@@ -155,14 +162,8 @@ body {
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .chat-container {
-        width: 100%;
-        height: 100vh;
-        border-radius: 0; /* Full screen on mobile */
-    }
-
     .chat-messages {
-        height: calc(100vh - 140px); /* Adjust for header and controls */
+        height: calc(100vh - 120px); /* Adjust for header and controls */
         padding: 10px;
     }
 
@@ -187,7 +188,7 @@ body {
 
     .chat-messages {
         padding: 8px;
-        height: calc(100vh - 130px); /* More adjustments for smaller screens */
+        height: calc(100vh - 100px); /* More adjustments for smaller screens */
     }
 
     .message {
