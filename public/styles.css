@@ -31,16 +31,19 @@ body {
     text-align: center;
     padding: 15px 20px;
     border-bottom: 2px solid #5c00e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.chat-header h3 {
-    margin: 0;
-    font-size: 1.5rem;
+.chat-header .logo {
+    max-height: 50px; /* Adjust the size as needed */
+    margin-right: 10px; /* Space between logo and text */
 }
 
 .chat-header p {
-    margin: 5px 0 0;
-    font-size: 0.9rem;
+    margin: 0;
+    font-size: 0.8rem;
 }
 
 /* Chat Messages */
@@ -173,8 +176,9 @@ body {
 }
 
 @media (max-width: 480px) {
-    .chat-header h3 {
-        font-size: 1.2rem;
+    .chat-header .logo {
+        max-height: 40px; /* Adjust size for smaller screens */
+        margin-right: 5px; /* Less margin */
     }
 
     .chat-header p {
