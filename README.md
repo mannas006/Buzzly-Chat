@@ -78,4 +78,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Contact
 
-For any questions or issues, please open an issue on the [GitHub repository](<repository-url>) or contact the maintainer at [].
+For any questions or issues, please open an issue on the [GitHub repository](<repository-url>) or contact the maintainer at [manasdey.iron006@gmail.com].
