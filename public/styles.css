@@ -34,9 +34,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: sticky; /* Keep header visible */
-    top: 0;
-    z-index: 10;
 }
 
 .chat-header .logo {
@@ -55,11 +52,9 @@ body {
     padding: 15px;
     background-color: #e0e0e0;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column-reverse; /* Keep new messages at the bottom */
+    height: calc(100vh - 150px); /* Dynamic height for messages area */
 }
 
-/* Message Styles */
 .message {
     margin-bottom: 10px;
     padding: 10px;
@@ -89,11 +84,6 @@ body {
     border-top: 1px solid #ddd;
     align-items: center;
     background-color: white;
-    position: sticky;
-    bottom: 0; /* Stick controls to the bottom */
-    z-index: 10;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
-    background-clip: padding-box;
 }
 
 #message-input {
@@ -103,7 +93,6 @@ body {
     margin-right: 10px;
     border: 1px solid #ddd;
     font-size: 1rem;
-    max-width: calc(100% - 90px); /* Ensure input does not overflow */
 }
 
 /* Buttons */
