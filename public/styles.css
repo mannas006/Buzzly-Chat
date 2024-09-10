@@ -37,6 +37,7 @@ body {
     position: sticky; /* Keep header visible */
     top: 0;
     z-index: 10;
+    background-clip: padding-box; /* Ensure background is visible when sticky */
 }
 
 .chat-header .logo {
@@ -55,7 +56,9 @@ body {
     padding: 15px;
     background-color: #e0e0e0;
     overflow-y: auto;
-    height: calc(100vh - 150px); /* Dynamic height for messages area */
+    height: calc(100vh - 140px); /* Adjusted height to fit controls */
+    display: flex;
+    flex-direction: column-reverse; /* Keep new messages at the bottom */
 }
 
 /* Message Styles */
@@ -100,6 +103,7 @@ body {
     margin-right: 10px;
     border: 1px solid #ddd;
     font-size: 1rem;
+    max-width: calc(100% - 90px); /* Ensure input does not overflow */
 }
 
 /* Buttons */
@@ -169,7 +173,7 @@ body {
     }
 
     .chat-messages {
-        height: calc(100vh - 140px); /* Adjust for header and controls */
+        height: calc(100vh - 130px); /* Adjust for header and controls */
         padding: 10px;
     }
 
@@ -194,7 +198,7 @@ body {
 
     .chat-messages {
         padding: 8px;
-        height: calc(100vh - 130px); /* More adjustments for smaller screens */
+        height: calc(100vh - 120px); /* More adjustments for smaller screens */
     }
 
     .message {
