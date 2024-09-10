@@ -13,7 +13,7 @@ app.use(express.static('public'));
 const animeNames = ['Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 'Mikasa', 'Vegeta'];
 let connectedClients = [];
 
-// Function to get a random animal name
+// Function to get a random anime name
 function getRandomName() {
     return animeNames[Math.floor(Math.random() * animeNames.length)];
 }
@@ -30,23 +30,20 @@ io.on('connection', (socket) => {
     connectedClients.push(socket);
 
     // Notify the user of their assigned name
-    socket.emit('connected', randomName);
+    socket.emit('connected', { yourName: randomName });
 
     // Check if there is another user to connect
     if (connectedClients.length > 1) {
         const otherClient = connectedClients.find(client => client.id !== socket.id);
-        otherClient.emit('connected', randomName);
-        socket.emit('connected', otherClient.name);
+        otherClient.emit('connected', { yourName: otherClient.name, partnerName: randomName });
+        socket.emit('connected', { yourName: randomName, partnerName: otherClient.name });
     } else {
         socket.emit('waiting');
     }
 
-    /// Handle new message from client
-    socket.on('sendMessage', (content) => {
-        // Broadcast the message to everyone except the sender
-        socket.broadcast.emit('receiveMessage', { sender: socket.name, content });
+    socket.on('sendMessage', (message) => {
+        io.emit('receiveMessage', { sender: socket.name, content: message });
     });
-
 
     socket.on('skip', () => {
         socket.emit('waiting');
@@ -71,7 +68,7 @@ io.on('connection', (socket) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

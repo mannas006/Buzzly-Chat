@@ -1,5 +1,6 @@
-const socket = io(); // Connect to the server
+//const socket = io(); // Connect to the server
 //const socket = io('https://buzzly-chat-application.onrender.com');
+const socket = io(); // Connect to the server
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
@@ -9,6 +10,9 @@ const skipButton = document.getElementById('skip-button');
 const messagesDiv = document.getElementById('messages');
 const notificationSound = document.getElementById('notification-sound'); // Add the notification sound
 const chatHeader = document.querySelector('.chat-header p'); // Grab the header text
+
+let username = ''; // Your username
+let partnerName = ''; // Partner's username
 
 // Display chat box
 chatBox.style.display = 'block';
@@ -74,7 +78,17 @@ socket.on('waiting', () => {
 });
 
 // Handle connection to a partner
-socket.on('connected', (partnerName) => {
-    chatHeader.textContent = `Connected to ${partnerName}`; // Update header text
+socket.on('connected', (data) => {
+    username = data.yourName; // Store your own username
+    partnerName = data.partnerName || ''; // Store partner's name if available
+
+    // Update header and input placeholder
+    if (partnerName) {
+        chatHeader.textContent = `Connected to ${partnerName}`; // Update header text
+    } else {
+        chatHeader.textContent = 'Waiting for a partner...'; // Waiting state
+    }
+    
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
+    messageInput.placeholder = `${username}, Type a message...`; // Update placeholder text with your username
 });
