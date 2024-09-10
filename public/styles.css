@@ -55,6 +55,26 @@ body {
     height: calc(100vh - 150px); /* Dynamic height for messages area */
 }
 
+/* Ensure message area is fully scrollable */
+.chat-messages.scrollable {
+    overflow-y: scroll;
+}
+
+/* Scroll bar customization */
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+/* Messages */
 .message {
     margin-bottom: 10px;
     padding: 10px;
@@ -84,6 +104,10 @@ body {
     border-top: 1px solid #ddd;
     align-items: center;
     background-color: white;
+    position: sticky;
+    bottom: 0; /* Always stays at the bottom */
+    z-index: 1000;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #message-input {
@@ -139,20 +163,6 @@ body {
     }
 }
 
-/* Scroll bar customization */
-.chat-messages::-webkit-scrollbar {
-    width: 5px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .chat-container {
@@ -164,6 +174,7 @@ body {
     .chat-messages {
         height: calc(100vh - 140px); /* Adjust for header and controls */
         padding: 10px;
+        overflow-y: auto;
     }
 
     #message-input {
@@ -188,6 +199,7 @@ body {
     .chat-messages {
         padding: 8px;
         height: calc(100vh - 130px); /* More adjustments for smaller screens */
+        overflow-y: scroll; /* Ensure scroll on smaller screens */
     }
 
     .message {
