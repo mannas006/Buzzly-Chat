@@ -12,6 +12,7 @@ app.use(express.static('public'));
 
 const animeNames = ['Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 'Mikasa', 'Vegeta'];
 let connectedClients = [];
+let currentChat = {}; // Keeps track of the current chat partners
 
 // Function to get a random anime name
 function getRandomName() {
@@ -37,15 +38,31 @@ io.on('connection', (socket) => {
         const otherClient = connectedClients.find(client => client.id !== socket.id);
         otherClient.emit('connected', { yourName: otherClient.name, partnerName: randomName });
         socket.emit('connected', { yourName: randomName, partnerName: otherClient.name });
+        
+        // Update currentChat to keep track of connected users
+        currentChat[socket.id] = otherClient.id;
+        currentChat[otherClient.id] = socket.id;
     } else {
         socket.emit('waiting');
     }
 
     socket.on('sendMessage', (message) => {
-        io.emit('receiveMessage', { sender: socket.name, content: message });
+        // Only send messages to the partner client
+        const partnerId = currentChat[socket.id];
+        if (partnerId) {
+            io.to(partnerId).emit('receiveMessage', { sender: socket.name, content: message });
+        }
     });
 
     socket.on('skip', () => {
+        // Notify the other client that the current user has skipped
+        const partnerId = currentChat[socket.id];
+        if (partnerId) {
+            io.to(partnerId).emit('waiting');
+        }
+        // Clear the current chat info
+        delete currentChat[socket.id];
+        delete currentChat[partnerId];
         socket.emit('waiting');
     });
 
@@ -55,10 +72,13 @@ io.on('connection', (socket) => {
         // Remove the client from the list
         connectedClients = connectedClients.filter(client => client.id !== socket.id);
 
-        // Notify other clients if needed
-        if (connectedClients.length > 0) {
-            connectedClients.forEach(client => client.emit('waiting'));
+        // Notify the partner client that the current user has disconnected
+        const partnerId = currentChat[socket.id];
+        if (partnerId) {
+            io.to(partnerId).emit('waiting');
+            delete currentChat[partnerId];
         }
+        delete currentChat[socket.id];
     });
 
     // Heartbeat mechanism
