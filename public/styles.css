@@ -22,6 +22,7 @@ body {
     overflow: hidden;
     box-shadow: none;
     transition: all 0.3s ease-in-out;
+    position: relative; /* To allow floating elements inside */
 }
 
 /* Chat Header */
@@ -53,25 +54,7 @@ body {
     background-color: #e0e0e0;
     overflow-y: auto;
     height: calc(100vh - 150px); /* Dynamic height for messages area */
-}
-
-/* Ensure message area is fully scrollable */
-.chat-messages.scrollable {
-    overflow-y: scroll;
-}
-
-/* Scroll bar customization */
-.chat-messages::-webkit-scrollbar {
-    width: 5px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 10px;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    margin-bottom: 70px; /* Space for floating input and buttons */
 }
 
 /* Messages */
@@ -97,17 +80,19 @@ body {
     align-self: flex-start;
 }
 
-/* Chat Controls (Input Area) */
+/* Floating Chat Controls (Input Area) */
 .chat-controls {
     display: flex;
     padding: 10px;
-    border-top: 1px solid #ddd;
-    align-items: center;
     background-color: white;
-    position: sticky;
-    bottom: 0; /* Always stays at the bottom */
-    z-index: 1000;
+    position: fixed; /* Fixed position at the bottom */
+    bottom: 0; /* Stick to the bottom */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%);
+    width: 100%; /* Full width of the chat container */
+    max-width: 600px;
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 #message-input {
@@ -163,6 +148,20 @@ body {
     }
 }
 
+/* Scroll bar customization */
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .chat-container {
@@ -174,7 +173,6 @@ body {
     .chat-messages {
         height: calc(100vh - 140px); /* Adjust for header and controls */
         padding: 10px;
-        overflow-y: auto;
     }
 
     #message-input {
@@ -199,6 +197,7 @@ body {
     .chat-messages {
         padding: 8px;
         height: calc(100vh - 130px); /* More adjustments for smaller screens */
+        margin-bottom: 70px; /* Space for floating input and buttons */
         overflow-y: scroll; /* Ensure scroll on smaller screens */
     }
 
