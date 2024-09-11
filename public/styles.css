@@ -283,5 +283,9 @@ body {
 
 /* Add this to your CSS file */
 .connected {
-    color: green; /* Change text color to green when connected */
+    background: linear-gradient(135deg, #00bfae, #00c6ff);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
 }
+
