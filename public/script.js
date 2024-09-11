@@ -91,3 +91,19 @@ socket.on('connected', (data) => {
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
     messageInput.placeholder = `${username}, Type a message...`; // Update placeholder text with your username
 });
+
+window.addEventListener('load', function() {
+    // Delay for 1 seconds before hiding the loading screen
+    setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        // Add a fade-out transition to the loading screen
+        loadingScreen.style.transition = 'opacity 0.5s ease';
+        loadingScreen.style.opacity = '0';
+        
+        // After the transition, hide the loading screen
+        setTimeout(function() {
+            loadingScreen.classList.add('hidden');
+        }, 500); // Time matches the transition duration
+    }, 1000); // 1 seconds delay for the loading screen visibility
+});
