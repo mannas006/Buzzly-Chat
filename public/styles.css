@@ -283,11 +283,12 @@ body {
 
 /* Add this to your CSS file */
 .connected {
-    color: #009688; /* Teal */
-    font-weight: normal;
+    color: #ff4081; /* Neon pink */
+    text-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081, 0 0 30px #ff4081, 0 0 40px #ff4081;
     padding: 10px;
-    border-bottom: 2px solid #009688; /* Teal underline */
+    border-radius: 5px;
 }
+
 
 
 
