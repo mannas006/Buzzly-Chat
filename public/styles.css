@@ -282,17 +282,12 @@ body {
 }
 
 /* Add this to your CSS file */
-@keyframes pulse {
-    0% { background-color: #4caf50; }
-    50% { background-color: #66bb6a; }
-    100% { background-color: #4caf50; }
+.connected {
+    color: #009688; /* Teal */
+    font-weight: normal;
+    padding: 10px;
+    border-bottom: 2px solid #009688; /* Teal underline */
 }
 
-.connected {
-    animation: pulse 2s infinite;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
 
 
