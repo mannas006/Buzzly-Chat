@@ -35,20 +35,7 @@ io.on('connection', (socket) => {
     socket.emit('connected', { yourName: randomName });
 
     // Attempt to connect the new user with another user from the queue
-    if (waitingQueue.length >= 2) {
-        const user1 = waitingQueue.shift(); // Get the first user from the queue
-        const user2 = waitingQueue.shift(); // Get the second user from the queue
-
-        // Notify both users of their chat partners
-        user1.emit('connected', { yourName: user1.name, partnerName: user2.name });
-        user2.emit('connected', { yourName: user2.name, partnerName: user1.name });
-        
-        // Update currentChat to keep track of connected users
-        currentChat[user1.id] = user2.id;
-        currentChat[user2.id] = user1.id;
-    } else {
-        socket.emit('waiting');
-    }
+    pairUsers();
 
     socket.on('sendMessage', (message) => {
         // Only send messages to the partner client
@@ -63,13 +50,16 @@ io.on('connection', (socket) => {
         const partnerId = currentChat[socket.id];
         if (partnerId) {
             io.to(partnerId).emit('waiting');
+            delete currentChat[partnerId];
         }
         // Clear the current chat info
         delete currentChat[socket.id];
-        delete currentChat[partnerId];
-        socket.emit('waiting');
-        // Re-add to waiting queue
+        // Add back to the waiting queue
         waitingQueue.push(socket);
+        socket.emit('waiting');
+        
+        // Try to connect the new user with another user from the waiting queue
+        pairUsers();
     });
 
     socket.on('disconnect', () => {
@@ -92,6 +82,29 @@ io.on('connection', (socket) => {
         socket.emit('heartbeat_ack');
     });
 });
+
+// Function to pair users from the waiting queue
+function pairUsers() {
+    while (waitingQueue.length >= 2) {
+        const user1 = waitingQueue.shift(); // Get the first user from the queue
+        const user2 = waitingQueue.shift(); // Get the second user from the queue
+
+        // Avoid pairing the same user with themselves
+        if (user1.id === user2.id) {
+            waitingQueue.push(user1); // Push back user1 to queue
+            waitingQueue.push(user2); // Push back user2 to queue
+            continue;
+        }
+
+        // Notify both users of their chat partners
+        user1.emit('connected', { yourName: user1.name, partnerName: user2.name });
+        user2.emit('connected', { yourName: user2.name, partnerName: user1.name });
+        
+        // Update currentChat to keep track of connected users
+        currentChat[user1.id] = user2.id;
+        currentChat[user2.id] = user1.id;
+    }
+}
 
 // Start the server
 const PORT = process.env.PORT || 3001;
