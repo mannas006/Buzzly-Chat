@@ -11,12 +11,18 @@ const io = new Server(server);
 app.use(express.static('public'));
 
 const animeNames = ['Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 'Mikasa', 'Vegeta'];
+const usedNames = new Set(); // Set to keep track of used names
 let waitingClients = []; // Queue for clients waiting for a partner
 let currentChat = {}; // Keeps track of the current chat partners
 
-// Function to get a random anime name
+// Function to get a random anime name that is not already used
 function getRandomName() {
-    return animeNames[Math.floor(Math.random() * animeNames.length)];
+    let name;
+    do {
+        name = animeNames[Math.floor(Math.random() * animeNames.length)];
+    } while (usedNames.has(name) && usedNames.size < animeNames.length); // Ensure name is unique
+    usedNames.add(name);
+    return name;
 }
 
 // Handle new connections
@@ -35,10 +41,8 @@ io.on('connection', (socket) => {
 
     // Check if there is another user to connect
     if (waitingClients.length > 1) {
-        // Find another client to connect with
         const otherClient = waitingClients.find(client => client.id !== socket.id);
         if (otherClient) {
-            // Emit connection info to both clients
             otherClient.emit('connected', { yourName: otherClient.name, partnerName: randomName });
             socket.emit('connected', { yourName: randomName, partnerName: otherClient.name });
             
@@ -110,6 +114,9 @@ io.on('connection', (socket) => {
             delete currentChat[partnerId];
         }
         delete currentChat[socket.id];
+
+        // Remove the used name from the set of used names
+        usedNames.delete(socket.name);
     });
 
     // Heartbeat mechanism
