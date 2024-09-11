@@ -74,7 +74,7 @@ socket.on('receiveMessage', (message) => {
 
 // Handle waiting state
 socket.on('waiting', () => {
-    chatHeader.textContent = 'Waiting for another user to connect...'; // Update header text
+    chatHeader.textContent = 'Waiting for another user...'; // Update header text
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
     // Optionally, enable the skip button if it was disabled
     skipButton.disabled = false;
