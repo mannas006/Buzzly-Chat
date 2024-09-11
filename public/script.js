@@ -1,5 +1,5 @@
 const socket = io('https://buzzly-chat-application.onrender.com');
-//const socket = io(); // Connect to the server
+// const socket = io(); // Connect to the server
 
 const chatBox = document.getElementById('chat-box');
 const controls = document.getElementById('controls');
@@ -54,6 +54,8 @@ messageInput.addEventListener('keypress', (event) => {
 // Add event listener for skip button
 skipButton.addEventListener('click', () => {
     socket.emit('skip');
+    // Optionally, disable skip button until reconnected
+    skipButton.disabled = true;
 });
 
 // Heartbeat mechanism
@@ -74,6 +76,8 @@ socket.on('receiveMessage', (message) => {
 socket.on('waiting', () => {
     chatHeader.textContent = 'Waiting for another user to connect...'; // Update header text
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
+    // Optionally, enable the skip button if it was disabled
+    skipButton.disabled = false;
 });
 
 // Handle connection to a partner
@@ -90,5 +94,7 @@ socket.on('connected', (data) => {
     
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
     messageInput.placeholder = `${username}, Type a message...`; // Update placeholder text with your username
-});
 
+    // Optionally, enable the skip button if it was disabled
+    skipButton.disabled = false;
+});
