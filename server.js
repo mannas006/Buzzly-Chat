@@ -63,13 +63,27 @@ io.on('connection', (socket) => {
         const partnerId = currentChat[socket.id];
         if (partnerId) {
             io.to(partnerId).emit('waiting');
+            delete currentChat[partnerId];
         }
         // Clear the current chat info
         delete currentChat[socket.id];
-        delete currentChat[partnerId];
-        socket.emit('waiting');
-        // Re-add to waiting queue
+        // Add back to the waiting queue
         waitingQueue.push(socket);
+        socket.emit('waiting');
+        
+        // Try to connect the new user with another user from the waiting queue
+        if (waitingQueue.length >= 2) {
+            const user1 = waitingQueue.shift(); // Get the first user from the queue
+            const user2 = waitingQueue.shift(); // Get the second user from the queue
+
+            // Notify both users of their chat partners
+            user1.emit('connected', { yourName: user1.name, partnerName: user2.name });
+            user2.emit('connected', { yourName: user2.name, partnerName: user1.name });
+            
+            // Update currentChat to keep track of connected users
+            currentChat[user1.id] = user2.id;
+            currentChat[user2.id] = user1.id;
+        }
     });
 
     socket.on('disconnect', () => {
