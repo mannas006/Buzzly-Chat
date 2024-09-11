@@ -282,10 +282,17 @@ body {
 }
 
 /* Add this to your CSS file */
+@keyframes pulse {
+    0% { background-color: #4caf50; }
+    50% { background-color: #66bb6a; }
+    100% { background-color: #4caf50; }
+}
+
 .connected {
-    background: linear-gradient(135deg, #00bfae, #00c6ff);
+    animation: pulse 2s infinite;
     color: white;
     padding: 10px;
     border-radius: 5px;
 }
+
 
