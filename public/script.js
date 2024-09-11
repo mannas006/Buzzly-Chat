@@ -92,6 +92,7 @@ socket.on('connected', (data) => {
     messageInput.placeholder = `${username}, Type a message...`; // Update placeholder text with your username
 });
 
+
 window.addEventListener('load', function() {
     // Delay for 1 seconds before hiding the loading screen
     setTimeout(function() {

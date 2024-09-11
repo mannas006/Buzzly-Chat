@@ -232,8 +232,8 @@ body {
 }
 
 .loading-logo {
-    width: 60px; /* Adjust the size as needed */
-    height: 60px; /* Keep the favicon square */
+    width: 53px; /* Adjust the size as needed */
+    height: 53px; /* Keep the favicon square */
     animation: pulseLogo 1.5s ease-in-out infinite; /* Cool pulsing animation */
     margin-bottom: 15px; /* Add space between logo and text */
 }
@@ -255,7 +255,7 @@ body {
 }
 
 .loading-text {
-    font-size: 18px; /* Adjust font size as needed */
+    font-size: 13px; /* Adjust font size as needed */
     color: #333;
     font-weight: bold;
     animation: fadeInOutText 1.5s ease-in-out infinite; /* Cool text animation */
