@@ -11,9 +11,8 @@ const io = new Server(server);
 app.use(express.static('public'));
 
 const animeNames = ['Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 'Mikasa', 'Vegeta'];
-let connectedClients = [];
+let waitingClients = []; // Queue for clients waiting for a partner
 let currentChat = {}; // Keeps track of the current chat partners
-let waitingQueue = []; // Queue to manage waiting users
 
 // Function to get a random anime name
 function getRandomName() {
@@ -28,14 +27,31 @@ io.on('connection', (socket) => {
     const randomName = getRandomName();
     socket.name = randomName;
 
-    // Add the socket to the waiting queue
-    waitingQueue.push(socket);
+    // Store the socket for later use
+    waitingClients.push(socket);
 
     // Notify the user of their assigned name
     socket.emit('connected', { yourName: randomName });
 
-    // Attempt to connect the new user with another user from the queue
-    pairUsers();
+    // Check if there is another user to connect
+    if (waitingClients.length > 1) {
+        // Find another client to connect with
+        const otherClient = waitingClients.find(client => client.id !== socket.id);
+        if (otherClient) {
+            // Emit connection info to both clients
+            otherClient.emit('connected', { yourName: otherClient.name, partnerName: randomName });
+            socket.emit('connected', { yourName: randomName, partnerName: otherClient.name });
+            
+            // Update currentChat to keep track of connected users
+            currentChat[socket.id] = otherClient.id;
+            currentChat[otherClient.id] = socket.id;
+
+            // Remove connected clients from the waiting list
+            waitingClients = waitingClients.filter(client => client.id !== socket.id && client.id !== otherClient.id);
+        }
+    } else {
+        socket.emit('waiting');
+    }
 
     socket.on('sendMessage', (message) => {
         // Only send messages to the partner client
@@ -50,24 +66,42 @@ io.on('connection', (socket) => {
         const partnerId = currentChat[socket.id];
         if (partnerId) {
             io.to(partnerId).emit('waiting');
-            // Remove the partner from the chat
+        }
+
+        // Remove the user from the current chat and waiting list
+        delete currentChat[socket.id];
+        if (partnerId) {
             delete currentChat[partnerId];
         }
-        // Clear the current chat info
-        delete currentChat[socket.id];
-        // Add back to the waiting queue
-        waitingQueue.push(socket);
+
+        // Re-add the skipped client to the waiting list
+        if (partnerId) {
+            waitingClients.push(io.sockets.sockets.get(partnerId));
+        }
+        waitingClients.push(socket);
+
         socket.emit('waiting');
-        
-        // Try to connect the skipped user with another user from the waiting queue
-        pairUsers();
+        // Attempt to connect with a new partner
+        if (waitingClients.length > 1) {
+            const otherClient = waitingClients.find(client => client.id !== socket.id);
+            if (otherClient) {
+                otherClient.emit('connected', { yourName: otherClient.name, partnerName: randomName });
+                socket.emit('connected', { yourName: randomName, partnerName: otherClient.name });
+
+                currentChat[socket.id] = otherClient.id;
+                currentChat[otherClient.id] = socket.id;
+
+                // Remove connected clients from the waiting list
+                waitingClients = waitingClients.filter(client => client.id !== socket.id && client.id !== otherClient.id);
+            }
+        }
     });
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
 
-        // Remove the client from the waiting queue
-        waitingQueue = waitingQueue.filter(client => client.id !== socket.id);
+        // Remove the client from the waiting list
+        waitingClients = waitingClients.filter(client => client.id !== socket.id);
 
         // Notify the partner client that the current user has disconnected
         const partnerId = currentChat[socket.id];
@@ -83,29 +117,6 @@ io.on('connection', (socket) => {
         socket.emit('heartbeat_ack');
     });
 });
-
-// Function to pair users from the waiting queue
-function pairUsers() {
-    while (waitingQueue.length >= 2) {
-        const user1 = waitingQueue.shift(); // Get the first user from the queue
-        const user2 = waitingQueue.shift(); // Get the second user from the queue
-
-        // Avoid pairing the same user with themselves
-        if (user1.id === user2.id) {
-            waitingQueue.push(user1); // Push back user1 to queue
-            waitingQueue.push(user2); // Push back user2 to queue
-            continue;
-        }
-
-        // Notify both users of their chat partners
-        user1.emit('connected', { yourName: user1.name, partnerName: user2.name });
-        user2.emit('connected', { yourName: user2.name, partnerName: user1.name });
-        
-        // Update currentChat to keep track of connected users
-        currentChat[user1.id] = user2.id;
-        currentChat[user2.id] = user1.id;
-    }
-}
 
 // Start the server
 const PORT = process.env.PORT || 3001;
