@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buzzly</title>
-    <link rel="icon" href="image/favicon.png" type="image/x-icon">
+    <link rel="icon" href="image/favicon.png" type="image/x-icon"> 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div id="loading-screen">
-        <img src="image/favicon.png" alt="Buzzly Favicon" class="loading-logo">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <img src="image/favicon.png" alt="Loading logo" class="loading-logo">
         <p class="loading-text">Loading, buzzly...</p>
     </div>
 
-    <!-- Main Chat Container -->
-    <div id="chat-box" class="chat-container shadow-lg">
+    <div id="chat-box" class="chat-container shadow-lg" style="opacity: 0; visibility: hidden;">
         <div class="chat-header">
-            <img src="image/logo-no-background.png" alt="Buzzly Logo" class="logo"> <!-- Logo image -->
+            <img src="image/logo-no-background.png" alt="Buzzly Logo" class="logo">
             <p id="header-text">Connecting you to a random user...</p>
         </div>
         <div id="messages" class="chat-messages"></div>
@@ -34,6 +32,6 @@
     <audio id="notification-sound" src="sounds/noti.mp3" preload="auto"></audio>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
+    <script src="loading.js"></script> <!-- Include the JavaScript for the loading screen -->
 </body>
-
 </html>
