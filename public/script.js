@@ -78,6 +78,9 @@ socket.on('waiting', () => {
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
     // Optionally, enable the skip button if it was disabled
     skipButton.disabled = false;
+
+    // Remove connected class
+    chatHeader.classList.remove('connected');
 });
 
 // Handle connection to a partner
@@ -88,8 +91,10 @@ socket.on('connected', (data) => {
     // Update header and input placeholder
     if (partnerName) {
         chatHeader.textContent = `Connected to ${partnerName}`; // Update header text
+        chatHeader.classList.add('connected'); // Add connected class to change color
     } else {
         chatHeader.textContent = 'Waiting for a partner...'; // Waiting state
+        chatHeader.classList.remove('connected'); // Remove connected class
     }
     
     messagesDiv.innerHTML = ''; // Clear messages div to remove any previous connection messages
