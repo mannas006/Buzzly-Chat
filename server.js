@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
         const partnerId = currentChat[socket.id];
         if (partnerId) {
             io.to(partnerId).emit('waiting');
+            // Remove the partner from the chat
             delete currentChat[partnerId];
         }
         // Clear the current chat info
@@ -58,7 +59,7 @@ io.on('connection', (socket) => {
         waitingQueue.push(socket);
         socket.emit('waiting');
         
-        // Try to connect the new user with another user from the waiting queue
+        // Try to connect the skipped user with another user from the waiting queue
         pairUsers();
     });
 
