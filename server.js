@@ -11,13 +11,13 @@ const io = new Server(server);
 app.use(express.static('public'));
 
 const animeNames = [
-    'Naruto', 'Goku', 'Luffy', 'Saitama', 'Ichigo', 'Light', 'Eren', 'Sakura', 
-    'Mikasa', 'Vegeta', 'Tanjiro', 'Nezuko', 'Zenitsu', 'Inosuke', 'Gojo', 
-    'Yuji', 'Megumi', 'Nobara', 'Levi', 'Erwin', 'Asuna', 'Kirito', 'Bakugo', 
-    'Deku', 'Todoroki', 'Asta', 'Yuno', 'Noelle', 'Senku', 'Rimuru', 'Meliodas', 
-    'Elizabeth', 'Escanor', 'Yor', 'Loid', 'Anya', 'Power', 'Denji', 'Makima', 
-    'Shinra', 'Arthur', 'Emma', 'Ray', 'Norman', 'Thorfinn', 'Violet', 
-    'Kaneki', 'Shinichi', 'Natsu', 'Lucy', 'Erza', 'Gray'
+    'Shinji', 'Gendo', 'Rei', 'Asuka', 'Misato',
+    'Yagami', 'Mikasa', 'Eren', 'Armin', 'Levi', 'Gon',
+    'Killua', 'Kurapika', 'Hisoka', 'Chrollo',
+    'Tanjiro', 'Nezuko', 'Zenitsu', 'Inosuke', 'Kanao',
+    'Rengoku', 'Shinobu', 'Tengen', 'Muzan', 'Ufotable',
+    'Yuu', 'Mitsuha', 'Taki', 'Denji', 'Makima',
+    'Power', 'Aki', 'Kishibe', 'Himeno', 'Kobeni'
 ];
 const usedNames = new Set(); // Set to keep track of used names
 let waitingClients = []; // Queue for clients waiting for a partner
