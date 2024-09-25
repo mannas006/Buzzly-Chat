@@ -1,4 +1,4 @@
-const socket = io('https://buzzly-chat-application.onrender.com');
+const socket = io('hhttps://buzzly-chat.onrender.com');
 // const socket = io(); // Connect to the server
 
 const chatBox = document.getElementById('chat-box');
