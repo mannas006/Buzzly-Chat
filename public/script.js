@@ -1,5 +1,5 @@
-//const socket = io('https://buzzlychat.azurewebsites.net', {
-const socket = io({
+const socket = io('https://buzzlychat.azurewebsites.net', {
+//const socket = io({
     autoConnect: true,
     reconnection: true,
     reconnectionDelay: 1000,
