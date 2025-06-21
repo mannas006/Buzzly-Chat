@@ -11,7 +11,14 @@
     "express": "^4.19.2",
     "socket.io": "^4.7.5"
   },
+  "devDependencies": {
+    "@mui/material": "^5.15.10",
+    "@mui/icons-material": "^5.15.10",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^11.0.3"
+  },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   }
 }

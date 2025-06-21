@@ -3,35 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buzzly</title>
-    <link rel="icon" href="image/favicon.png" type="image/x-icon"> 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Buzzly - Random Chat</title>
+    <link rel="icon" href="image/favicon.png" type="image/x-icon">
+    
+    <!-- Google Fonts and Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
-        <img src="image/favicon.png" alt="Loading logo" class="loading-logo">
-        <p class="loading-text">Loading, buzzly...</p>
-    </div>
-
-    <div id="chat-box" class="chat-container shadow-lg" style="opacity: 0; visibility: hidden;">
-        <div class="chat-header">
-            <img src="image/logo-no-background.png" alt="Buzzly Logo" class="logo">
-            <p id="header-text">Connecting you to a random user...</p>
-        </div>
-        <div id="messages" class="chat-messages"></div>
-        <div id="controls" class="chat-controls">
-            <input id="message-input" class="form-control" type="text" placeholder="Type a message..." />
-            <button id="send-button" class="btn btn-primary btn-rounded"><i class="fas fa-paper-plane"></i></button>
-            <button id="skip-button" class="btn btn-danger btn-rounded"><i class="fas fa-random"></i></button>
+        <div class="loading-content">
+            <div class="loading-logo-container">
+                <img src="image/favicon.png" alt="Loading logo" class="loading-logo">
+                <div class="loading-ripple"></div>
+            </div>
+            <div class="loading-text">
+                <h2>Buzzly</h2>
+                <p>Connecting you to the world...</p>
+            </div>
         </div>
     </div>
 
+    <!-- Main Chat Application -->
+    <div id="app-container" class="app-container" style="opacity: 0; visibility: hidden;">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="image/favicon.png" alt="Buzzly Logo" class="header-logo">
+                    </div>
+                    <h1 class="app-title">Buzzly</h1>
+                </div>
+                <div class="header-right">
+                    <div id="status-chip" class="status-chip connecting">
+                        <span class="status-icon">✨</span>
+                        <span class="status-text">Connecting...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Chat Container -->
+        <main class="chat-main">
+            <div class="chat-container">
+                <!-- Messages Area -->
+                <div id="messages-container" class="messages-container">
+                    <div id="messages" class="messages"></div>
+                    <div id="welcome-message" class="welcome-message" style="display: none;">
+                        <div class="welcome-content">
+                            <h3>🎉 You're now connected!</h3>
+                            <p>Say hello to <span id="partner-name-welcome"></span> and start chatting!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <input 
+                            id="message-input" 
+                            type="text" 
+                            placeholder="Type a message..." 
+                            class="message-input"
+                            disabled
+                        />
+                        <button id="send-button" class="action-button primary" disabled>
+                            <span class="material-icons">send</span>
+                        </button>
+                        <button id="skip-button" class="action-button secondary" disabled>
+                            <span class="material-icons">shuffle</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Audio -->
     <audio id="notification-sound" src="sounds/noti.mp3" preload="auto"></audio>
+    
+    <!-- Scripts -->
     <script src="/socket.io/socket.io.js"></script>
+    <script src="loading.js"></script>
     <script src="script.js"></script>
-    <script src="loading.js"></script> <!-- Include the JavaScript for the loading screen -->
 </body>
 </html>
