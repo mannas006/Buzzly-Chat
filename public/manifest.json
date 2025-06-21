@@ -1,0 +1,39 @@
+{
+  "name": "Buzzly Chat - Anonymous Random Chat",
+  "short_name": "Buzzly",
+  "description": "Connect instantly with strangers worldwide. No signup required.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "image/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "image/logo-color.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait-primary",
+  "categories": ["social", "communication"],
+  "shortcuts": [
+    {
+      "name": "Start Chat",
+      "short_name": "Chat",
+      "description": "Start a new random chat",
+      "url": "/",
+      "icons": [
+        {
+          "src": "image/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

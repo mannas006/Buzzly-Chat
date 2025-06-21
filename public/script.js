@@ -27,7 +27,7 @@ const messagesContainer = document.getElementById('messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const skipButton = document.getElementById('skip-button');
-const welcomeMessage = document.getElementById('welcome-message');
+const welcomeMessage = document.getElementById('partner-name-welcome');
 const partnerNameWelcome = document.getElementById('partner-name-welcome');
 const notificationSound = document.getElementById('notification-sound');
 
@@ -79,9 +79,13 @@ const addMessage = (sender, content, isOwn = false) => {
     
     messagesContainer.appendChild(messageDiv);
     
-    // Scroll to bottom with smooth animation
+    // Scroll to bottom with optimized animation
     setTimeout(() => {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        if (window.scrollToBottom) {
+            window.scrollToBottom();
+        } else {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
     }, 50);
     
     // Play notification sound for received messages
@@ -137,6 +141,9 @@ const sendMessage = () => {
 // Initialize app once DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing app...');
+    
+    // Initialize mobile optimizations first
+    initMobileOptimizations();
     
     // Check if DOM elements are found
     console.log('DOM elements check:', {
@@ -331,5 +338,167 @@ setInterval(() => {
 socket.on('heartbeat_ack', () => {
     // Keep connection alive
 });
+
+// Mobile utility functions
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform));
+};
+
+const isIOS = () => {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+};
+
+const handleMobileKeyboard = () => {
+    if (!isMobile()) return;
+    
+    let initialViewportHeight = window.innerHeight;
+    
+    const adjustForKeyboard = () => {
+        const currentHeight = window.innerHeight;
+        const keyboardHeight = initialViewportHeight - currentHeight;
+        
+        if (keyboardHeight > 100) { // Keyboard is likely open
+            document.body.style.height = `${currentHeight}px`;
+            const chatContainer = document.querySelector('.chat-container');
+            if (chatContainer) {
+                chatContainer.style.height = `calc(${currentHeight}px - 120px)`;
+            }
+        } else { // Keyboard is likely closed
+            document.body.style.height = '';
+            const chatContainer = document.querySelector('.chat-container');
+            if (chatContainer) {
+                chatContainer.style.height = '';
+            }
+        }
+    };
+    
+    // Handle keyboard events
+    if (messageInput) {
+        messageInput.addEventListener('focus', () => {
+            setTimeout(adjustForKeyboard, 300);
+        });
+        
+        messageInput.addEventListener('blur', () => {
+            setTimeout(adjustForKeyboard, 300);
+        });
+    }
+    
+    // Handle viewport changes
+    window.addEventListener('resize', adjustForKeyboard);
+    
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => {
+            initialViewportHeight = window.innerHeight;
+            adjustForKeyboard();
+        }, 500);
+    });
+};
+
+const optimizeScrolling = () => {
+    if (!messagesContainer) return;
+    
+    // Smooth scrolling for messages
+    const scrollToBottom = (smooth = true) => {
+        const scrollOptions = {
+            top: messagesContainer.scrollHeight,
+            behavior: smooth ? 'smooth' : 'auto'
+        };
+        
+        if (isMobile()) {
+            // On mobile, use immediate scroll for better performance
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        } else {
+            messagesContainer.scrollTo(scrollOptions);
+        }
+    };
+    
+    // Enhanced scroll to bottom function
+    window.scrollToBottom = scrollToBottom;
+};
+
+const addTouchFeedback = () => {
+    if (!isMobile()) return;
+    
+    const buttons = document.querySelectorAll('.action-button');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function(e) {
+            this.style.transform = 'scale(0.95)';
+            this.style.opacity = '0.8';
+        }, { passive: true });
+        
+        button.addEventListener('touchend', function(e) {
+            setTimeout(() => {
+                this.style.transform = '';
+                this.style.opacity = '';
+            }, 150);
+        }, { passive: true });
+        
+        button.addEventListener('touchcancel', function(e) {
+            this.style.transform = '';
+            this.style.opacity = '';
+        }, { passive: true });
+    });
+};
+
+const preventZoom = () => {
+    if (!isMobile()) return;
+    
+    // Prevent double-tap zoom
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Prevent pinch zoom
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('gestureend', function (e) {
+        e.preventDefault();
+    });
+};
+
+const initMobileOptimizations = () => {
+    if (isMobile()) {
+        console.log('📱 Mobile device detected - applying optimizations');
+        
+        // Add mobile class to body
+        document.body.classList.add('mobile-device');
+        
+        if (isIOS()) {
+            document.body.classList.add('ios-device');
+        }
+        
+        // Initialize mobile features
+        handleMobileKeyboard();
+        addTouchFeedback();
+        preventZoom();
+        optimizeScrolling();
+        
+        // Improve touch scrolling on iOS
+        if (isIOS() && messagesContainer) {
+            messagesContainer.style.webkitOverflowScrolling = 'touch';
+        }
+        
+        // Hide address bar on mobile browsers
+        setTimeout(() => {
+            window.scrollTo(0, 1);
+        }, 0);
+    }
+};
+
+initMobileOptimizations();
 
 console.log('🎉 Buzzly Chat initialized successfully!');

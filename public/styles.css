@@ -596,80 +596,329 @@ body {
 }
 
 /* Responsive Design */
+/* Enhanced Mobile Responsiveness */
 @media (max-width: 768px) {
+    :root {
+        --spacing-xs: 2px;
+        --spacing-sm: 6px;
+        --spacing-md: 12px;
+        --spacing-lg: 16px;
+        --spacing-xl: 24px;
+    }
+    
+    body {
+        /* Prevent zoom on input focus */
+        -webkit-text-size-adjust: 100%;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
     .app-header {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-md);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(20px);
+        background: rgba(15, 15, 35, 0.95);
     }
     
     .header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .header-left {
         flex-direction: column;
-        gap: var(--spacing-md);
-        text-align: center;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        min-width: 0;
     }
     
     .app-title {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    .status-chip {
+        font-size: 0.75rem;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: var(--radius-md);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
     }
     
     .chat-main {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
+        /* Account for mobile keyboard */
+        padding-bottom: calc(var(--spacing-sm) + env(keyboard-inset-height, 0px));
     }
     
     .chat-container {
         border-radius: var(--radius-md);
-        min-height: 60vh;
+        min-height: calc(100vh - 120px);
+        /* Optimize for mobile viewport */
+        height: calc(100vh - 120px);
+        max-height: calc(100vh - 120px);
     }
     
     .messages {
         padding: var(--spacing-md);
+        /* Better scrolling on mobile */
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
     }
     
-    .input-container {
-        padding: var(--spacing-md);
+    .messages::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .message {
+        margin-bottom: var(--spacing-sm);
     }
     
     .message-bubble {
         max-width: 85%;
         padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.9rem;
+        line-height: 1.4;
+        /* Better text rendering on mobile */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .message-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+        margin: 0 var(--spacing-xs);
+    }
+    
+    .input-container {
+        padding: var(--spacing-md);
+        /* Stick to bottom on mobile */
+        position: sticky;
+        bottom: 0;
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .input-wrapper {
+        gap: var(--spacing-sm);
+        align-items: center;
+    }
+    
+    .message-input {
+        padding: var(--spacing-md);
+        font-size: 16px; /* Prevent zoom on iOS */
+        border-radius: var(--radius-lg);
+        min-height: 44px; /* Touch target size */
+        /* Better mobile input handling */
+        -webkit-appearance: none;
+        appearance: none;
+        -webkit-border-radius: var(--radius-lg);
+        border-radius: var(--radius-lg);
     }
     
     .action-button {
         width: 44px;
         height: 44px;
+        /* Ensure proper touch targets */
+        min-width: 44px;
+        min-height: 44px;
+        flex-shrink: 0;
+        /* Better touch response */
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
     }
     
     .loading-text h2 {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     
     .loading-logo {
         width: 60px;
         height: 60px;
     }
+    
+    .welcome-message {
+        padding: var(--spacing-md);
+    }
+    
+    .welcome-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .welcome-content p {
+        font-size: 0.8rem;
+    }
 }
 
+/* Extra Small Mobile Devices */
 @media (max-width: 480px) {
-    .header-left {
+    .header-content {
         flex-direction: column;
         gap: var(--spacing-sm);
+        text-align: center;
+    }
+    
+    .header-left {
+        align-items: center;
+        width: 100%;
+    }
+    
+    .app-title {
+        font-size: 1rem;
     }
     
     .status-chip {
-        font-size: 0.75rem;
-        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.7rem;
+        padding: 2px var(--spacing-sm);
+        max-width: 180px;
+    }
+    
+    .chat-container {
+        min-height: calc(100vh - 140px);
+        height: calc(100vh - 140px);
+        border-radius: var(--spacing-sm);
     }
     
     .message-bubble {
         max-width: 90%;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
+        padding: var(--spacing-sm) 12px;
+    }
+    
+    .message-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 0.65rem;
     }
     
     .input-wrapper {
-        flex-direction: column;
-        gap: var(--spacing-md);
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        align-items: stretch;
+    }
+    
+    .message-input {
+        font-size: 16px; /* Prevent zoom */
+        padding: 12px var(--spacing-md);
+        border-radius: var(--radius-md);
     }
     
     .action-button {
-        align-self: flex-end;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    .action-button .material-icons {
+        font-size: 20px;
+    }
+    
+    .loading-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .loading-text h2 {
+        font-size: 1.25rem;
+    }
+    
+    .loading-text p {
+        font-size: 0.8rem;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .chat-container {
+        min-height: calc(100vh - 80px);
+        height: calc(100vh - 80px);
+    }
+    
+    .app-header {
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+    
+    .header-content {
+        flex-direction: row;
+    }
+    
+    .messages {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .input-container {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+/* Touch and hover optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Mobile devices without hover capability */
+    .action-button:hover::before {
+        width: 0;
+        height: 0;
+    }
+    
+    .action-button:active::before {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .message-bubble:hover {
+        transform: none;
+    }
+    
+    .action-button:active {
+        transform: scale(0.95);
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* iOS Safari specific optimizations */
+@supports (-webkit-touch-callout: none) {
+    .input-container {
+        /* Account for iOS safe area */
+        padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
+    }
+    
+    .message-input {
+        /* Prevent iOS zoom */
+        font-size: max(16px, 1em);
+        /* Fix iOS input styling */
+        -webkit-appearance: none;
+        appearance: none;
+        -webkit-border-radius: var(--radius-lg);
+        border-radius: var(--radius-lg);
+    }
+    
+    .chat-container {
+        /* Better iOS viewport handling */
+        height: calc(100vh - 120px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    }
+}
+
+/* High DPI displays optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .action-button {
+        /* Sharper icons on retina displays */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .message-bubble {
+        /* Better text rendering on high DPI */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 }
