@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .connected { background-color: #d4edda; color: #155724; }
+        .waiting { background-color: #fff3cd; color: #856404; }
+        .disconnected { background-color: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Buzzly Connection Test</h1>
+    <div id="status" class="status disconnected">Not connected</div>
+    <div id="user-info"></div>
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    
+    <div>
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click "Connect" to join the chat</li>
+            <li>Open this page in another tab/window</li>
+            <li>Both should connect and pair automatically</li>
+        </ol>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = null;
+        let isManuallyDisconnected = false;
+
+        function updateStatus(message, className) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${className}`;
+        }
+
+        function updateUserInfo(info) {
+            document.getElementById('user-info').innerHTML = info;
+        }
+
+        function connect() {
+            if (socket) {
+                socket.disconnect();
+            }
+
+            isManuallyDisconnected = false;
+            updateStatus('Connecting...', 'waiting');
+
+            socket = io({
+                autoConnect: true,
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionAttempts: 5,
+                timeout: 10000
+            });
+
+            socket.on('connect', () => {
+                console.log('Connected with ID:', socket.id);
+                updateStatus('Connected to server', 'connected');
+            });
+
+            socket.on('waiting', () => {
+                console.log('Waiting for partner');
+                updateStatus('Waiting for another user...', 'waiting');
+                updateUserInfo('');
+            });
+
+            socket.on('connected', (data) => {
+                console.log('Partner connected:', data);
+                if (data.partnerName) {
+                    updateStatus(`Connected to ${data.partnerName}`, 'connected');
+                    updateUserInfo(`<strong>You:</strong> ${data.yourName}<br><strong>Partner:</strong> ${data.partnerName}`);
+                } else {
+                    updateStatus(`You are ${data.yourName} - Waiting for partner`, 'waiting');
+                    updateUserInfo(`<strong>You:</strong> ${data.yourName}`);
+                }
+            });
+
+            socket.on('disconnect', (reason) => {
+                console.log('Disconnected:', reason);
+                if (!isManuallyDisconnected) {
+                    updateStatus(`Disconnected: ${reason}`, 'disconnected');
+                }
+            });
+
+            socket.on('connect_error', (error) => {
+                console.error('Connection error:', error);
+                updateStatus('Connection error', 'disconnected');
+            });
+        }
+
+        function disconnect() {
+            if (socket) {
+                isManuallyDisconnected = true;
+                socket.disconnect();
+                updateStatus('Manually disconnected', 'disconnected');
+                updateUserInfo('');
+            }
+        }
+
+        // Auto-connect on page load
+        window.addEventListener('load', () => {
+            setTimeout(connect, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzly Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-container { margin: 20px 0; }
+        .status { padding: 10px; border-radius: 5px; margin: 5px 0; }
+        .waiting { background-color: #fff3cd; color: #856404; }
+        .connected { background-color: #d4edda; color: #155724; }
+        .message { background-color: #e7f3ff; padding: 5px; margin: 2px 0; }
+    </style>
+</head>
+<body>
+    <h1>Buzzly Connection Test</h1>
+    <button onclick="createConnection()">Create New Connection</button>
+    <button onclick="clearTests()">Clear All</button>
+    
+    <div id="connections"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let connectionCount = 0;
+        let connections = [];
+
+        function createConnection() {
+            connectionCount++;
+            const containerId = `connection-${connectionCount}`;
+            
+            // Create UI container for this connection
+            const container = document.createElement('div');
+            container.className = 'test-container';
+            container.innerHTML = `
+                <h3>Connection ${connectionCount}</h3>
+                <div id="${containerId}-status" class="status waiting">Connecting...</div>
+                <div id="${containerId}-messages"></div>
+                <div>
+                    <input type="text" id="${containerId}-input" placeholder="Type message..." />
+                    <button onclick="sendTestMessage('${containerId}')">Send</button>
+                    <button onclick="skipConnection('${containerId}')">Skip</button>
+                </div>
+            `;
+            document.getElementById('connections').appendChild(container);
+
+            // Create socket connection
+            const socket = io();
+            connections.push({ id: containerId, socket: socket });
+
+            // Handle events
+            socket.on('waiting', () => {
+                document.getElementById(`${containerId}-status`).innerHTML = 'Waiting for partner...';
+                document.getElementById(`${containerId}-status`).className = 'status waiting';
+            });
+
+            socket.on('connected', (data) => {
+                const statusDiv = document.getElementById(`${containerId}-status`);
+                if (data.partnerName) {
+                    statusDiv.innerHTML = `Connected! You: ${data.yourName}, Partner: ${data.partnerName}`;
+                    statusDiv.className = 'status connected';
+                } else {
+                    statusDiv.innerHTML = `You: ${data.yourName} - Waiting for partner...`;
+                    statusDiv.className = 'status waiting';
+                }
+            });
+
+            socket.on('receiveMessage', (message) => {
+                const messagesDiv = document.getElementById(`${containerId}-messages`);
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message';
+                msgDiv.innerHTML = `${message.sender}: ${message.content}`;
+                messagesDiv.appendChild(msgDiv);
+            });
+        }
+
+        function sendTestMessage(containerId) {
+            const connection = connections.find(c => c.id === containerId);
+            const input = document.getElementById(`${containerId}-input`);
+            if (connection && input.value.trim()) {
+                connection.socket.emit('sendMessage', input.value);
+                
+                // Display own message
+                const messagesDiv = document.getElementById(`${containerId}-messages`);
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message';
+                msgDiv.innerHTML = `You: ${input.value}`;
+                msgDiv.style.textAlign = 'right';
+                messagesDiv.appendChild(msgDiv);
+                
+                input.value = '';
+            }
+        }
+
+        function skipConnection(containerId) {
+            const connection = connections.find(c => c.id === containerId);
+            if (connection) {
+                connection.socket.emit('skip');
+            }
+        }
+
+        function clearTests() {
+            connections.forEach(conn => conn.socket.disconnect());
+            connections = [];
+            document.getElementById('connections').innerHTML = '';
+            connectionCount = 0;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; font-family: monospace; }
+        .connected { background: #d4edda; }
+        .disconnected { background: #f8d7da; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Minimal Connection Test</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="clearLogs()">Clear Logs</button>
+    <div id="logs"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = null;
+        let logCount = 0;
+
+        function log(message, type = '') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            document.getElementById('logs').appendChild(div);
+            console.log(message);
+            
+            // Auto scroll to bottom
+            div.scrollIntoView();
+            logCount++;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').innerHTML = '';
+            logCount = 0;
+        }
+
+        function testConnection() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+
+            log('🚀 Starting connection test...');
+            
+            socket = io({
+                autoConnect: true,
+                reconnection: false, // Disable reconnection for cleaner testing
+                timeout: 5000
+            });
+
+            socket.on('connect', () => {
+                log(`✅ Connected with ID: ${socket.id}`, 'connected');
+            });
+
+            socket.on('waiting', () => {
+                log('⏳ Received waiting state');
+            });
+
+            socket.on('connected', (data) => {
+                log(`🤝 Received connected event: ${JSON.stringify(data)}`);
+            });
+
+            socket.on('disconnect', (reason) => {
+                log(`❌ Disconnected: ${reason}`, 'disconnected');
+            });
+
+            socket.on('connect_error', (error) => {
+                log(`❌ Connection error: ${error.message}`, 'disconnected');
+            });
+
+            socket.on('error', (error) => {
+                log(`❌ Socket error: ${error}`, 'disconnected');
+            });
+
+            // Test timeout - if connection lasts 10 seconds, it's stable
+            setTimeout(() => {
+                if (socket && socket.connected) {
+                    log('🎉 Connection stable for 10 seconds!', 'connected');
+                }
+            }, 10000);
+        }
+
+        // Auto-start test
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

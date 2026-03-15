@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzly Test</title>
+    
+    <!-- Material UI CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .material-icons {
+            font-family: 'Material Icons';
+            font-size: 24px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚀 Buzzly Material UI Test</h1>
+        
+        <h2>Dependencies Test:</h2>
+        <div id="test-results">
+            <p>🔄 Testing dependencies...</p>
+        </div>
+        
+        <h2>Material Icons Test:</h2>
+        <p>
+            <span class="material-icons">send</span> Send Icon
+            <span class="material-icons">shuffle</span> Shuffle Icon
+        </p>
+    </div>
+    
+    <!-- Material UI React Components (via CDN) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@mui/material@latest/umd/material-ui.production.min.js"></script>
+    
+    <script>
+        const testResults = document.getElementById('test-results');
+        let results = [];
+        
+        // Test React
+        if (typeof React !== 'undefined') {
+            results.push('✅ React loaded successfully');
+        } else {
+            results.push('❌ React failed to load');
+        }
+        
+        // Test ReactDOM
+        if (typeof ReactDOM !== 'undefined') {
+            results.push('✅ ReactDOM loaded successfully');
+        } else {
+            results.push('❌ ReactDOM failed to load');
+        }
+        
+        // Test Material UI
+        if (typeof MaterialUI !== 'undefined') {
+            results.push('✅ Material UI loaded successfully');
+        } else {
+            results.push('❌ Material UI failed to load');
+        }
+        
+        // Test Babel
+        if (typeof Babel !== 'undefined') {
+            results.push('✅ Babel loaded successfully');
+        } else {
+            results.push('❌ Babel failed to load');
+        }
+        
+        testResults.innerHTML = results.map(result => `<p>${result}</p>`).join('');
+        
+        console.log('Available globals:', {
+            React: typeof React,
+            ReactDOM: typeof ReactDOM,
+            MaterialUI: typeof MaterialUI,
+            Babel: typeof Babel
+        });
+    </script>
+</body>
+</html>
