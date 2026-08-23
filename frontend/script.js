@@ -395,13 +395,25 @@ const handleMobileKeyboard = () => {
     };
     
     if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', adjustForKeyboard);
+        window.visualViewport.addEventListener('resize', () => {
+            if (window.visualViewport.height < window.innerHeight * 0.75) {
+                document.body.classList.add('keyboard-open');
+            } else {
+                document.body.classList.remove('keyboard-open');
+            }
+            adjustForKeyboard();
+        });
     }
     
     if (messageInput) {
         messageInput.addEventListener('focus', () => {
+            document.body.classList.add('keyboard-open');
             setTimeout(adjustForKeyboard, 200);
             setTimeout(adjustForKeyboard, 400);
+        });
+
+        messageInput.addEventListener('blur', () => {
+            document.body.classList.remove('keyboard-open');
         });
     }
     

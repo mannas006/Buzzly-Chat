@@ -763,37 +763,47 @@ body {
     }
 }
 
+/* Hide partner connector status chip when mobile keyboard is active */
+body.keyboard-open .status-chip,
+body.keyboard-open .header-right {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
 /* Extra Small Mobile Devices */
 @media (max-width: 480px) {
     .app-header {
-        padding: var(--spacing-xs) var(--spacing-md);
+        padding: 8px 14px;
     }
 
     .header-content {
         flex-direction: row;
-        gap: var(--spacing-xs);
+        gap: 8px;
         align-items: center;
         justify-content: space-between;
     }
     
     .header-left {
+        display: flex;
         align-items: center;
-        gap: var(--spacing-xs);
+        gap: 8px;
     }
 
     .header-logo {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
     }
     
     .app-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     
     .status-chip {
-        font-size: 0.725rem;
-        padding: 4px var(--spacing-sm);
-        max-width: 160px;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        max-width: 170px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -812,7 +822,7 @@ body {
     .message-bubble {
         max-width: 85%;
         font-size: 0.9rem;
-        padding: var(--spacing-sm) 14px;
+        padding: 8px 12px;
         line-height: 1.4;
     }
     
