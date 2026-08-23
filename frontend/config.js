@@ -6,6 +6,6 @@ window.SOCKET_SERVER_URL = window.SOCKET_SERVER_URL || (
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? window.location.origin
         : (window.location.hostname.includes('vercel.app')
-            ? 'https://buzzly-backend.dokploy.app' // Update this to your Dokploy VPS domain
+            ? 'https://buzzly-backend.webnexalabs.in'
             : window.location.origin)
 );
