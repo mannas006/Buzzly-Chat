@@ -389,44 +389,24 @@ const handleMobileKeyboard = () => {
     let initialViewportHeight = window.innerHeight;
     
     const adjustForKeyboard = () => {
-        const currentHeight = window.innerHeight;
-        const keyboardHeight = initialViewportHeight - currentHeight;
-        
-        if (keyboardHeight > 100) { // Keyboard is likely open
-            document.body.style.height = `${currentHeight}px`;
-            const chatContainer = document.querySelector('.chat-container');
-            if (chatContainer) {
-                chatContainer.style.height = `calc(${currentHeight}px - 120px)`;
-            }
-        } else { // Keyboard is likely closed
-            document.body.style.height = '';
-            const chatContainer = document.querySelector('.chat-container');
-            if (chatContainer) {
-                chatContainer.style.height = '';
-            }
+        if (window.scrollToBottom) {
+            window.scrollToBottom(false);
         }
     };
     
-    // Handle keyboard events
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', adjustForKeyboard);
+    }
+    
     if (messageInput) {
         messageInput.addEventListener('focus', () => {
-            setTimeout(adjustForKeyboard, 300);
-        });
-        
-        messageInput.addEventListener('blur', () => {
-            setTimeout(adjustForKeyboard, 300);
+            setTimeout(adjustForKeyboard, 200);
+            setTimeout(adjustForKeyboard, 400);
         });
     }
     
-    // Handle viewport changes
-    window.addEventListener('resize', adjustForKeyboard);
-    
-    // Handle orientation changes
     window.addEventListener('orientationchange', () => {
-        setTimeout(() => {
-            initialViewportHeight = window.innerHeight;
-            adjustForKeyboard();
-        }, 500);
+        setTimeout(adjustForKeyboard, 300);
     });
 };
 
