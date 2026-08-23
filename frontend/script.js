@@ -1,12 +1,12 @@
-const socket = io('https://buzzlychat.azurewebsites.net', {
-//const socket = io({
+const socketServerUrl = window.SOCKET_SERVER_URL || window.location.origin;
+const socket = io(socketServerUrl, {
     autoConnect: true,
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionAttempts: 5,
     timeout: 20000,
     transports: ['websocket', 'polling']
-}); // Connect to the local server with enhanced configuration
+});
 
 console.log('🚀 Buzzly Chat - Socket.io client initialized');
 

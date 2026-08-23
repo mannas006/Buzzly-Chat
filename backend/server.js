@@ -14,8 +14,16 @@ const io = new Server(server, {
     transports: ['websocket', 'polling']
 });
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+const path = require('path');
+
+// Serve static frontend files for seamless local development
+const frontendPath = path.join(__dirname, '../frontend');
+app.use(express.static(frontendPath));
+
+// Health check endpoint for Dokploy / container orchestrators
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', uptime: process.uptime(), timestamp: Date.now() });
+});
 
 const animeNames = [
     'Shinji', 'Gendo', 'Rei', 'Asuka', 'Misato',
