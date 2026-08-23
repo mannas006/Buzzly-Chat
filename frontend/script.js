@@ -288,6 +288,36 @@ socket.on('waiting', () => {
     }
 });
 
+// Sound chime for pairing connection
+const playConnectSound = () => {
+    try {
+        if (notificationSound) {
+            notificationSound.currentTime = 0;
+            notificationSound.play().catch(e => console.log('Audio element play deferred:', e));
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+            const audioCtx = new AudioCtx();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.35);
+        }
+    } catch (e) {
+        console.log('Connection chime error:', e);
+    }
+};
+
 // Handle connection to a partner
 socket.on('connected', (data) => {
     try {
@@ -297,6 +327,9 @@ socket.on('connected', (data) => {
 
         console.log('✅ Successfully paired with:', partnerName);
         
+        // Play notification sound when paired with a stranger
+        playConnectSound();
+
         updateStatus('connected', `Chatting with ${partnerName}`, '💬');
         
         if (messageInput) {
