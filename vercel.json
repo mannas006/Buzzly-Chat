@@ -1,3 +1,8 @@
 {
-  "outputDirectory": "frontend"
+  "rewrites": [
+    { "source": "/", "destination": "/web/index.html" },
+    { "source": "/chat", "destination": "/frontend/index.html" },
+    { "source": "/web/(.*)", "destination": "/web/$1" },
+    { "source": "/frontend/(.*)", "destination": "/frontend/$1" }
+  ]
 }
