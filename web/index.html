@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Buzzly Chat - Anonymous Real-Time Random Chat</title>
+  <meta name="description" content="Connect instantly with strangers worldwide. 100% anonymous real-time chat with zero signup or message tracking.">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+
+  <!-- Google Fonts & Material Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="nav-brand">
+        <img src="images/logo-color.png" alt="Buzzly Logo">
+        <span>Buzzly</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/mannas006/Buzzly-Chat" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <a href="/chat" class="btn btn-primary nav-cta">
+        <span>Launch App</span>
+        <span class="material-icons">arrow_forward</span>
+      </a>
+      <button class="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+        <span class="material-icons">menu</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        <span>Decoupled Vercel + Dokploy Architecture</span>
+      </div>
+
+      <h1 class="hero-title">
+        Instant Anonymous Chat <br>
+        <span class="gradient-text-primary">Without Boundaries.</span>
+      </h1>
+
+      <p class="hero-description">
+        Connect in real-time with random strangers worldwide. Zero signups, zero tracking, and 100% ephemeral WebSockets.
+      </p>
+
+      <div class="hero-cta">
+        <a href="/chat" class="btn btn-primary">
+          <span>Start Chatting Now</span>
+          <span class="material-icons">forum</span>
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary">
+          <span>See How It Works</span>
+        </a>
+      </div>
+
+      <!-- Live Chat Mockup Container -->
+      <div class="hero-mockup-wrapper glass-panel">
+        <div class="hero-mockup-header">
+          <div class="window-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <div class="mockup-status-badge">
+            <span class="badge-dot"></span>
+            <span>Paired: Shinji ↔ Asuka</span>
+          </div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-messages" id="live-chat-demo">
+            <div class="mockup-msg received">
+              <div class="mockup-avatar">S</div>
+              <div class="mockup-bubble">Hey there! Greetings from Tokyo 🗼</div>
+            </div>
+            <div class="mockup-msg sent">
+              <div class="mockup-avatar">You</div>
+              <div class="mockup-bubble">Hey! Awesome to connect instantly!</div>
+            </div>
+            <div class="mockup-msg received">
+              <div class="mockup-avatar">S</div>
+              <div class="mockup-bubble">
+                <span class="typing-dots">
+                  <span></span><span></span><span></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Statistics Counter Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card glass-panel">
+          <div class="stat-number gradient-text" data-counter="50000">0</div>
+          <div class="stat-label">Daily Conversations</div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-number gradient-text" data-counter="99">0%</div>
+          <div class="stat-label">Uptime on VPS</div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-number gradient-text" data-counter="50">&lt;50ms</div>
+          <div class="stat-label">WebSocket Latency</div>
+        </div>
+        <div class="stat-card glass-panel">
+          <div class="stat-number gradient-text">100%</div>
+          <div class="stat-label">Anonymous Privacy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Powerful Features</span>
+        <h2 class="section-title">Designed for Instant Connections</h2>
+        <p class="section-desc">Built with pure speed, modern UI aesthetics, and zero registration barriers.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">no_accounts</span>
+          </div>
+          <h3 class="feature-title">100% Anonymous</h3>
+          <p class="feature-desc">Random anime-themed usernames assigned on connection. No phone numbers, emails, or accounts required.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">bolt</span>
+          </div>
+          <h3 class="feature-title">Ultra-Low Latency</h3>
+          <p class="feature-desc">Powered by Socket.IO over persistent WebSockets hosted on high-speed Dokploy VPS nodes.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">shuffle</span>
+          </div>
+          <h3 class="feature-title">One-Click Skip</h3>
+          <p class="feature-desc">Not vibing with your chat partner? Click skip to get instantly paired with a new stranger in under 1 second.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">volume_up</span>
+          </div>
+          <h3 class="feature-title">Audio Chimes</h3>
+          <p class="feature-desc">Subtle Web Audio chimes notify you the moment a new user joins your session or sends a message.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">devices</span>
+          </div>
+          <h3 class="feature-title">Mobile Optimized</h3>
+          <p class="feature-desc">Flawless touch experience with 100dvh dynamic height and soft keyboard viewport handling for iOS and Android.</p>
+        </div>
+
+        <div class="feature-card glass-panel">
+          <div class="feature-icon">
+            <span class="material-icons">shield</span>
+          </div>
+          <h3 class="feature-title">Zero Data Logging</h3>
+          <p class="feature-desc">Messages exist purely in transient server memory. Nothing is ever saved to databases or persistent storage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="steps-section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple Process</span>
+        <h2 class="section-title">How Buzzly Works</h2>
+        <p class="section-desc">Get started in three effortless steps.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card glass-panel">
+          <div class="step-number">01</div>
+          <div class="step-icon">
+            <span class="material-icons">touch_app</span>
+          </div>
+          <h3 class="step-title">Open App</h3>
+          <p class="step-desc">Simply open Buzzly Chat in your browser. You get an instant random nickname generated automatically.</p>
+        </div>
+
+        <div class="step-card glass-panel">
+          <div class="step-number">02</div>
+          <div class="step-icon">
+            <span class="material-icons">sync</span>
+          </div>
+          <h3 class="step-title">Instant Pairing</h3>
+          <p class="step-desc">Our backend queue pairs you with another available user online in milliseconds.</p>
+        </div>
+
+        <div class="step-card glass-panel">
+          <div class="step-number">03</div>
+          <div class="step-icon">
+            <span class="material-icons">chat</span>
+          </div>
+          <h3 class="step-title">Start Chatting</h3>
+          <p class="step-desc">Say hello! Chat as long as you like or hit shuffle to meet someone new anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item glass-panel">
+          <div class="faq-question">
+            <span>Is Buzzly Chat completely free?</span>
+            <span class="material-icons faq-toggle-icon">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            Yes! Buzzly Chat is 100% free with no hidden fees, premium tiers, or registration requirements.
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <div class="faq-question">
+            <span>Are my chat messages saved or monitored?</span>
+            <span class="material-icons faq-toggle-icon">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            Never. All messages are transmitted directly over ephemeral WebSockets and exist solely in active server RAM. Nothing is written to disk or stored in any database.
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <div class="faq-question">
+            <span>Do I need to download an app?</span>
+            <span class="material-icons faq-toggle-icon">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            No downloads needed. Buzzly Chat is a web app optimized for mobile Safari, Android Chrome, and all desktop browsers.
+          </div>
+        </div>
+
+        <div class="faq-item glass-panel">
+          <div class="faq-question">
+            <span>What technology powers Buzzly Chat?</span>
+            <span class="material-icons faq-toggle-icon">expand_more</span>
+          </div>
+          <div class="faq-answer">
+            Buzzly Chat uses a decoupled architecture with a static frontend hosted on Vercel's global CDN and an Express + Socket.IO WebSocket backend hosted on Dokploy VPS.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-banner glass-panel">
+        <h2 class="cta-title">Ready to Meet Someone New?</h2>
+        <p class="cta-desc">Join thousands of people chatting anonymously right now around the globe.</p>
+        <a href="/chat" class="btn btn-primary">
+          <span>Launch Buzzly Chat</span>
+          <span class="material-icons">rocket_launch</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <img src="images/logo-color.png" alt="Buzzly Logo">
+          <span>Buzzly Chat</span>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://github.com/mannas006/Buzzly-Chat" target="_blank" rel="noopener">GitHub Repo</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Buzzly Chat. Built with ❤️ for anonymous real-time conversations.
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
